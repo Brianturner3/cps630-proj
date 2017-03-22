@@ -22,7 +22,7 @@ MongoClient.connect(url, function(err, db) {
 app.get('/api/users',function(req,res){
 	console.log("I recieved a GET request");
 
-	db.Users.find(function(err, docs){
+	db.users.find(function(err, docs){
 		if(err){
 			throw err.message;
 		}else{
