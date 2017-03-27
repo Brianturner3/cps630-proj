@@ -1,6 +1,6 @@
 var myApp = angular.module("myApp",[]);
-myApp.controller('myLogin', ['$scope', '$http', function($scope,$html){
-
+myApp.controller('loginController', function($scope,$html){
+	
 	$scope.loginUser = function(){
 		console.log("logging user in");
 		$http.post('/api/loginUser'.then(function(response){
@@ -12,4 +12,4 @@ myApp.controller('myLogin', ['$scope', '$http', function($scope,$html){
 		refresh();
 	});*/
 
-}]);
+});
