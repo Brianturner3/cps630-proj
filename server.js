@@ -70,6 +70,7 @@ app.post('/api/loginUser', function(req,res){
       throw err.message;
     }else if(docs.length == 1){
       console.log("Logging in");
+      res.json(docs);
     }else{
       console.log("Can't find you");
     }

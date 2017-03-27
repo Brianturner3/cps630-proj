@@ -14,7 +14,7 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider,$lo
 	$locationProvider.html5Mode({enabled : true, requireBase: false});
 }]);
 
-myApp.controller('loginController',function($scope,$http){
+myApp.controller('loginController',function($scope,$http,$window){
 
 
 	$scope.loginUser = function(){
@@ -32,7 +32,7 @@ myApp.controller('loginController',function($scope,$http){
 		console.log("logging user in");
 		$http.post('/api/loginUser', user).then(function(response){
 			console.log(response);
-			refresh();
+			$window.location.href = '/home.html'
 		});
 	}
 
@@ -71,9 +71,6 @@ myApp.controller('signUpController', function($scope,$http){
 			});
 		}
 	}
-
-
-
 });
 
 
