@@ -16,7 +16,6 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider,$lo
 
 myApp.controller('loginController',function($scope,$http,$window){
 
-
 	$scope.loginUser = function(){
 
 		var user = {

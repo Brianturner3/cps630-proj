@@ -1,0 +1,264 @@
+*{margin: 0; padding: 0;}
+
+.header{
+    background-color: #f5ab35;
+    height: 200px;
+}
+.header h1{
+    color: white;
+    font-size: 30px;
+    float: left;
+    padding-top: 10px;
+    margin-left: 4%;
+    letter-spacing: 2px;
+    
+}
+.header .title{
+    flex: 2;
+}
+.header .img{
+    flex: 0.25;
+}
+.header img{
+    height: 100px;
+    width: 90px;
+    align-content: center;
+    margin-left: 42%;
+}
+.header a{
+    text-decoration: none;
+    color: white;
+    padding-top: 10px;
+    margin-bottom: 30px;
+    margin-left: 48%;
+    
+}
+.header .login{
+    flex: 1;
+}
+.banner{
+    height: 400px;
+    background-image: url(../images/lecture.jpg);
+}
+.divider{
+    height: 100px;
+    background-color: #f39c12;
+}
+.row-one{
+    max-width: 1400px;
+    margin: 60px 60px 0px 60px;
+}
+.row-two{
+    max-width: 1400px;
+    margin: 40px 60px 0px 60px;
+}
+.row-three{
+    max-width: 1400px;
+    margin: 40px 60px 0 60px;
+}
+@media (min-width:750px){
+    .row-one{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+    }
+    .row-two{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+    }
+    .row-three{       
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+    }
+    .header{
+        display: flex;
+        height: 100px;
+    }
+    .header img{
+        padding-right: 20px;
+    }
+
+    .header h1{
+    padding-top: 30px;
+    margin-left: 40px;
+    
+    }
+    .info-bar{
+    display: flex;
+    height: 250px;
+    }
+    .header .login{
+    }
+    .header a{
+    padding: 0;
+    float: right;
+    }
+    
+}
+.box{
+    flex-basis: 48%;
+    height: 300px;
+    box-sizing: border-box;
+    margin-bottom: 10%;
+}
+.box a{
+    padding: 0px 200px 250px 290px;
+    text-align: center;
+}
+.box-two{
+    flex-basis: 48%;
+    height: 300px;
+    box-sizing: border-box;
+    margin-bottom: 10%;
+}
+.box-two a{
+    padding: 0px 200px 250px 290px;
+    text-align: center;
+}
+.box-three{
+    flex-basis: 48%;
+    height: 300px;
+    box-sizing: border-box;
+    margin-bottom: 10%;
+}
+
+@media (min-width:750px){
+    .box {
+        margin-bottom: 0;
+    }
+    .box-two {
+        margin-bottom: 0;
+    }
+    .box-three {
+        margin-bottom: 0;
+    }
+}
+.box:nth-child(1){
+    background-color: #f9690e; 
+    background-image: url("../images/house.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+.box:nth-child(1):hover{
+    background-color: #ff893e;
+}
+.box:nth-child(2){
+    background-color: #f9690e; 
+    background-image: url(../images/pencil.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+.box:nth-child(2):hover{
+    background-color: #ff893e;
+}
+.box-two:nth-child(1){
+    background-color: #f89406; 
+    background-image: url(../images/stethoscope.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+.box-two:nth-child(1):hover{
+    background-color: #ffb142;
+}
+.box-two:nth-child(2){
+    background-color: #f89406; 
+    background-image: url(../images/gavel.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+.box-two:nth-child(2):hover{
+    background-color: #ffb142;
+}
+.box-three:nth-child(1){background-color: #55d6bd;}
+.box-three:nth-child(2){background-color: #55d6bd;}
+.box-three:nth-child(1):hover{background-color: #60f0d4;}
+.box-three:nth-child(2):hover{background-color: #60f0d4;}
+
+.navigation > ul{
+    background-color: #f39c12;
+    color: white;
+    
+}
+.navigation > ul > li{
+    display: inline-block;
+    padding: 15px 25px 15px 25px;
+    position: relative;
+    visibility: hidden;
+}
+@media (min-width: 550px) {
+    .navigation > ul > li{
+        visibility: visible;
+    }
+}
+.navigation > ul > li:hover{
+    background-color: #f2ae42;   
+}
+
+ul.sub_menu{
+    list-style-type: none;
+    background-color: #f2ae42;
+    position:absolute;
+    padding: 5px 45px 10px 25px;
+    margin-top: 15px;
+    margin-left: -25px;
+    visibility: hidden;
+}
+
+ul.sub_menu li{
+    padding-bottom: 15px;
+    
+}
+.navigation li:hover .sub_menu{
+    visibility: visible;
+}
+.link{
+    text-decoration: none;
+    color: white;
+}
+
+input{
+    float: right;
+    position: relative;
+    width: 150px;
+    height: 20px;
+    margin-top: -35px;
+    margin-right: 60px;
+}
+.navigation img{
+    float: right;
+    height: 20px;
+    width: 20px;
+    margin-top: -32px;
+    margin-right: 25px;
+}
+
+.info-bar{
+    margin-top: 50px;
+    background-color: #22313f;
+}
+.column-1{
+    flex: 2;
+    color: white;
+    padding: 20px
+}
+.column-2{
+    flex: 1;
+    color: white;
+    padding: 20px;
+}
+.column-3{
+    flex: 1;
+    color: white;
+    padding: 20px;
+}
+
+.footer{
+    height: 70px;
+    background-color: aquamarine;
+}
