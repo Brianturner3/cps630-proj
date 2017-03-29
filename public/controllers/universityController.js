@@ -2,7 +2,7 @@ var app = angular.module('app',[]);
 /*
 Controller that controls the information that is immeidately loaded onto the page
 */
-app.controller('loadSchool',function($scope){
+app.controller('loadSchool',function($scope,saveSchoolName){
 	//Loads initial University information
 	$scope.load = function(){
 		var keysToPrograms = {"agriculture": "Agriculture, Agriculture Operations, And Related Sciences", "resources": "Natural Resources And Conservation", "architecture":"Architecture And Related Services", "ethnic_cultural_gender": "Area, Ethnic, Cultural, Gender, And Group Studies", "communication": "Communication, Journalism, And Related Programs","communications_technology": "Communications Technologies/Technicians And Support Services","computer":"Computer And Information Sciences And Support Services","personal_culinary": "Personal And Culinary Services","education":"Education","engineering":"Engineering","engineering_technology": "Engineering Technologies And Engineering-Related Fields","language":"Foreign Languages, Literatures, And Linguistics","family_consumer_science":"Family And Consumer Sciences/Human Sciences","legal":"Legal Professions And Studies","english":"English Language And Literature/Letters","humanities":"Liberal Arts And Sciences, General Studies And Humanities","library":"Library Science","biological":"Biological And Biomedical Sciences","mathematics":"Mathematics And Statistics","military":"Military Technologies And Applied Sciences","multidiscipline":"Multi/Interdisciplinary Studies","parks_recreation_fitness":"Parks, Recreation, Leisure, And Fitness Studies","philosophy_religious":"Philosophy And Religious Studies","theology_religious_vocation":"Theology And Religious Vocations","physical_science":"Physical Sciences","science_technology":"Science Technologies/Technicians","psychology":"Psychology","security_law_enforcement":"Homeland Security, Law Enforcement, Firefighting And Related Protective Services","public_administration_social_service":"Public Administration And Social Service Professions","social_science":"Social Sciences","construction":"Construction Trades","mechanic_repair_technology":"Mechanic And Repair Technologies/Technicians","precision_production":"Precision Production","transportation":"Transportation And Materials Moving","visual_performing":"Visual And Performing Arts","health":"Health Professions And Related Programs","business_marketing":"Business, Management, Marketing, And Related Support Services","history":"History"};
@@ -18,6 +18,7 @@ app.controller('loadSchool',function($scope){
 
 		function apiCall(){
 			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+selectedSchool+"&api_key="+key;
+			saveSchoolName.setSchoolName(selectedSchool);
 			selectedSchoolInfo(url);
 		}
 
@@ -262,6 +263,25 @@ app.controller('loadSchool',function($scope){
 /*
 Controller for storing the favorited school and storing it in the server
 */
-app.controller('favoriteController',function($scope,$http){
-
+app.controller('favoriteController',function($scope,$http,saveSchoolName){
+	var school = saveSchoolName.getSchoolName();
+	console.log(school);
+	/*$http.post('/api/saveSchool', school).then(function(response){
+		console.log("Recieved Response");
+	});*/
+	
 });
+/*
+Service the extracts and saves the name of the school
+ */
+app.service('saveSchoolName',function(){
+	var schoolName;
+	this.setSchoolName = function(x){
+		schoolName = x;
+	}
+	this.getSchoolName = function(){
+		return schoolName;
+	}
+});
+
+
