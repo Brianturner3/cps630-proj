@@ -55,7 +55,8 @@ myApp.controller('signUpController', function($scope,$http){
 			name : $scope.name,
 			email : $scope.email,
 			password : $scope.password,
-			confirm_password : $scope.confirmPassword
+			confirm_password : $scope.confirmPassword,
+			favoriteSchools : []
 		}
 		if(!validateEmail(user.email)){
 			alert("Email incorrect");

@@ -44,7 +44,7 @@ function sendRequest(url){
 				var a = document.createElement("a");
 				a.className = "info";
 				var pSchoolName = document.createTextNode(data.results[i]['school.name']);
-				a.setAttribute('href', "individual.html?name="+data.results[i]['school.name']);
+				a.setAttribute('href', "university.html?name="+data.results[i]['school.name']);
 				a.appendChild(pSchoolName);
 				div.appendChild(a);
 

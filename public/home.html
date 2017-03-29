@@ -1,84 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/home.css">
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" type="text/css" href="css/home.css">
 </head>
 
 <body>
-    <div class="header">
-        <div class="img">
-        <img src="../images/gradcap.png">
-        </div>
-        <div class="title">
-        <h1>UNIVERSITY WEBSITE</h1>
-        </div>
-        <div class="login">
-        <a href="#">Register</a>
-        <a href="#">Login</a>
-        </div>
-    </div>
-            <nav class="navigation">
-                
-                <ul>
-                    <li><a href="index.html" class="link">HOME</a></li>
-                    <li>UNIVERSITY
-                        <ul class="sub_menu">
-                            <li><a href="index2.html" class="link">COMPARE</a></li>
-                            <li><a href="#" class="link">GRANTS</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#" class="link">ABOUT</a></li>
-                </ul>
-                <input type="text" placeholder="Search">
-                <img src="../images/search.png">
-            </nav>
-    <div class="banner">
-    </div>
-    <div class="divider">
-    </div>
-    <div class="row-one">
-        <div class="box">
-            <a href="#"></a>
-        </div>
-        <div class="box">
-            <a href="#"></a>
-        </div>
-    </div>
-    <div class="row-two">
-        <div class="box-two">
-            <a href="#"></a>
-        </div>
-        <div class="box-two">
-            <a href="#"></a>
-        </div>
-    </div>
-    
-    <div class="row-three">
-        <div class="box-three">
-        </div>
-        <div class="box-three">
-        </div>
-    </div>
-    <div class="info-bar">
-        <div class="column-1">
-            <h2>Contact Us</h2>
-            <br>Hello
-            <br>Phone: 905 412 4897
-            <br>Hours: 10am - 9pm
-            <p>Praesent lacus dolor, accumsan eget mollis vel, congue sed urna. Integer scelerisque, nisl molestie pharetra mollis, velit lectus scelerisque felis, sit amet ullamcorper est risus sed metus. Curabitur sed enim facilisis sem imperdiet pharetra. Quisque ante risus, finibus ac aliquam ac, viverra.</p>
-        </div>
-        <div class="column-2">
-            <h2>Two</h2>
-            <p>Praesent lacus dolor, accumsan eget mollis vel, congue sed urna. Integer scelerisque, nisl molestie pharetra mollis.</p>
-        </div>
-        <div class="column-3">
-            <h2>Three</h2>
-            <p>Praesent lacus dolor, accumsan eget mollis vel, congue sed urna. Integer scelerisque, nisl molestie pharetra mollis, velit lectus scelerisque felis, sit amet ullamcorper est risus sed metus.</p>
-        </div>
-    </div>
-    <div class="footer">
-    
-    </div>
+
+	<!-- Start of Page -->
+	<div class="header">
+		<div class="img">
+			<img src="../images/gradcap.png">
+		</div>
+		<div class="title">
+			<h1>UNIVERSITY WEBSITE</h1>
+		</div>
+		<div class="login">
+			<a href="#">Register</a>
+			<a href="#">Login</a>
+		</div>
+	</div>
+	<nav class="navigation">
+		<ul>
+			<li><a href="index.html" class="link">HOME</a></li>
+			<li>UNIVERSITY
+				<ul class="sub_menu">
+					<li><a href="index2.html" class="link">COMPARE</a></li>
+					<li><a href="#" class="link">GRANTS</a></li>
+				</ul>
+			</li>
+			<li><a href="#" class="link">ABOUT</a></li>
+		</ul>
+	</nav>
+	<div class="banner">
+		<div class="overlay">
+			<div class="row">
+				<div class="six offset-by-three columns search-container">
+					<form>
+						<h1>Enter a university or college in US</h1>
+						<input type="button" onclick="getUni()" value="Submit" >
+						<input type = "text" id = "uni" style="color:black;" placeholder="Search..">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="divider" id="university" style="display:none">
+		
+	</div>
+
+	<!-- End of Page -->
+
+	<!--Javascript -->
+	<script type = "text/javascript" src = "js/home.js"></script> 
+
 </body>
 </html>

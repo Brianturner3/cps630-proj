@@ -39,6 +39,23 @@
 .banner{
     height: 400px;
     background-image: url(../images/lecture.jpg);
+    position: relative;
+    width: 100%;
+}
+.overlay{
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: .7;
+    background: black;
+}
+.search-container{
+    margin: 10rem auto 10rem auto;
+    color:white;
 }
 .divider{
     height: 100px;
@@ -183,6 +200,7 @@
 .navigation > ul{
     background-color: #f39c12;
     color: white;
+    margin-bottom: 0;
     
 }
 .navigation > ul > li{
@@ -261,4 +279,15 @@ input{
 .footer{
     height: 70px;
     background-color: aquamarine;
+}
+
+/*
+Style for Search Bar
+ */
+
+p.info{
+    line-height: 0px;
+}
+a.info{
+    line-height: 0px;
 }
