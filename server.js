@@ -14,26 +14,30 @@ app.use(bodyparser.json());
 MongoClient.connect(url, function(err, db) {
   // Get an additional db
   if(err){
-  	console.log("Error" + err.message);
-  	db.close();
+    console.log("Error" + err.message);
+    db.close();
   }else{
-  	console.log("connected");
+    console.log("connected");
   }
 });
-
+/*
+ * Return all entries in the db
+ */
 app.get('/api/users',function(req,res){
-	console.log("I recieved a GET request");
+  console.log("I recieved a GET request");
 
-	db.users.find(function(err, docs){
-		if(err){  
-			throw err.message;
-		}else{
-			console.log(docs);
-			res.json(docs);
-		}
-	})
+  db.users.find(function(err, docs){
+    if(err){  
+      throw err.message;
+    }else{
+      console.log(docs);
+      res.json(docs);
+    }
+  })
 });
-
+/*
+ * Register the user
+ */
 app.post('/api/registerUser', function(req,res){
   console.log("Recieved Registration");
   console.log(req.body.name);
@@ -58,7 +62,11 @@ app.post('/api/registerUser', function(req,res){
     })
   }
 });
-
+/*
+ * /api/loginUser Takes the email and password found in the request 
+ * and attempts to match it with one in the db. If found, send a res.
+ * back to the client.
+ */
 app.post('/api/loginUser', function(req,res){
   var email = req.body.email;
   var password = req.body.password;
@@ -76,7 +84,41 @@ app.post('/api/loginUser', function(req,res){
     }
   })
 });
-  //db.close();
-  //console.log("connected");
+/*
+ * 'api/saveSchool' saves the school found in the http.body and saves it into t
+ * he favorite list for the current user.
+ */
+app.post('/api/saveSchool', function(req,res){
+  console.log("Recieved Save School Request");
+  var userEmail = req.body.email;
+  var school = req.body.school;
+  //Get the favorite schools for a user 
+  db.users.find( {"email" : userEmail},function(err,docs){
+    var listOfSchools = docs[0].favoriteSchools, i = 0, bContains;
+    for(i; i<listOfSchools.length;i++){
+      if( (listOfSchools[i].trim().localeCompare(school)) === 0)
+        bContains = true;
+    }
+    if(!bContains){
+      db.users.update({ "email" : userEmail},{ $push : {favoriteSchools : school}}, function(){
+        console.log("update successful");
+        res.json(docs);
+      });
+    }
+  });
+});
+/*
+'api/getSavedSchools' retrieves list of saved schools from db and returns to client.
+ */
+app.post('/api/getSavedSchools', function(req,res){
+  console.log("Recieved request for saved schools");
+  var userEmail = req.body.email;
+  console.log(userEmail);
+  db.users.find({'email' : userEmail}, function(err,docs){
+    console.log(docs[0].favoriteSchools);
+    res.json(docs[0].favoriteSchools);
+  });
+});
+
   app.listen(3000);
   console.log("Server is running on port 3000");

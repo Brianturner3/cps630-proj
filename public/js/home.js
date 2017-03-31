@@ -31,7 +31,7 @@ function sendRequest(url){
 			console.log(data);
 			if(data.results.length>0){
 			var header = document.createElement("h1");
-			var h1 = document.createTextNode("List Of All Universities with keyword \""+ searchedUni +"\"");
+			var h1 = document.createTextNode("List Of All Schools with keyword \""+ searchedUni +"\"");
 			header.appendChild(h1);
 			
 			var element = document.getElementById("university");
@@ -44,7 +44,7 @@ function sendRequest(url){
 				var a = document.createElement("a");
 				a.className = "info";
 				var pSchoolName = document.createTextNode(data.results[i]['school.name']);
-				a.setAttribute('href', "university.html?name="+data.results[i]['school.name']);
+				a.setAttribute('href', "university.html?user="+getURLParameter("user")+"&name="+data.results[i]['school.name']);
 				a.appendChild(pSchoolName);
 				div.appendChild(a);
 
@@ -62,13 +62,13 @@ function sendRequest(url){
 				var pSchoolSizeText =document.createTextNode(numberWithCommas(data.results[i]['2014.student.size']) + " undergraduate students");
 				pSchoolSize.appendChild(pSchoolSizeText);
 				div.appendChild(pSchoolSize);
-				
+				console.log();
 				element.appendChild(div);
 			}
 			}
 		}else{
 		var header = document.createElement("h3");
-			var h1 = document.createTextNode("No such school with keyword \"" + searchedUni + "\"");
+			var h1 = document.createTextNode("No such schools with keyword \"" + searchedUni + "\"");
 			header.appendChild(h1);
 			
 			var element = document.getElementById("university");

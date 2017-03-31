@@ -1,5 +1,6 @@
 myApp = angular.module('myApp',['ngRoute']);
 var url = 'mongodb://turner:cupcake@ds129010.mlab.com:29010/cps630proj';
+
 myApp.config(['$routeProvider', '$locationProvider', function($routeProvider,$locationProvider){
 	$routeProvider.when("/login", {
 		templateUrl : "views/login.html",
@@ -26,12 +27,12 @@ myApp.controller('loginController',function($scope,$http,$window){
 			$scope.name = "";
 			$scope.email = "";
 			$scope.password = "";
-			confirm_password = "";
+			$scope.confirm_password = "";
 		}
 		console.log("logging user in");
 		$http.post('/api/loginUser', user).then(function(response){
 			console.log(response);
-			$window.location.href = '/home.html'
+			$window.location.href = '/home.html?user='+user.email;
 		});
 	}
 
