@@ -8,8 +8,7 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "mongodb": "^2.2.25",
-    "mongojs": "^2.4.0",
-    "ngstorage": "^0.3.11"
+    "mongojs": "^2.4.0"
   },
   "url": "https://github.com/Brianturner3/cps630-proj",
   "devDependencies": {},
