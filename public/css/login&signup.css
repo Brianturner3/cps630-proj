@@ -1,0 +1,85 @@
+body{
+	width: 100vw;
+	height: auto;
+	color: black;
+	background-color: #102542;
+}
+#h1-form{
+	margin: 5rem;
+	text-align: center
+}
+video#bgvid { 
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -100;
+	-ms-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+	background-size: cover; 
+}
+.overlay{
+	position: absolute;
+	top:0;
+	left:0;
+	right: 0;
+	opacity: .65;
+	background-color: #102542;
+	height: 100%;
+	width: 100%;
+}
+@media (min-width: 320px){
+	#form-container{
+		height: 100vh;
+		background: rgba(205,215,214,.3);/*#CDD7D6*/;
+		position: absolute;
+		text-align: center;
+	}
+	#signup-form-container{
+		border-radius: 20px;
+		height: 100vh;
+		text-align: center;
+		background: rgba(205,215,214,.3);/*#CDD7D6*/;
+		position: absolute;
+	}
+	#login-submit{
+		background-color: #F87060;
+	}
+	#register-submit{
+		background-color: #F87060;
+	}
+	#logoImg{
+		width: 100%;
+	}
+}
+/* Larger than mobile */
+@media (min-width: 400px) {
+}
+
+/* Larger than phablet (also point when grid becomes active) */
+@media (min-width: 550px) {
+	#form-container{
+		top: 10%;
+		height: auto;
+		border-radius: 20px;
+		/*min-width: 450px;*/
+	}
+	#signup-form-container{
+		height: 95vh;
+		top:3%;
+	}
+}
+
+/* Larger than tablet */
+@media (min-width: 750px) {}
+
+/* Larger than desktop */
+@media (min-width: 1000px) {}
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px) {}

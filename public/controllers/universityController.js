@@ -1,8 +1,28 @@
-var app = angular.module('app',[]);
+var app = angular.module('app',['ngCookies']);
+app.run(function($cookies, $rootScope, $http, $window){
+
+	if($cookies.get('token')){
+		var info = {
+			token : $cookies.get('token')
+		}
+		$http.post('/api/checkCookie', info).then(function(response){
+
+			if(response.data.auth == true){
+				console.log("match");
+			}else if(response.data.auth == false){
+				console.log("Not a match");
+				$window.location.href = '/index.html';
+			}
+		});
+	}else{
+		$window.location.href = "/index.html";
+	}
+});
+
 /*
 Controller that controls the information that is immeidately loaded onto the page
 */
-app.controller('loadSchool',function($scope,saveSchoolName){
+app.controller('loadSchool',function($scope,$http,$injector,$cookies,saveSchoolName){
 	//Loads initial University information
 	$scope.load = function(){
 		var keysToPrograms = {"agriculture": "Agriculture, Agriculture Operations, And Related Sciences", "resources": "Natural Resources And Conservation", "architecture":"Architecture And Related Services", "ethnic_cultural_gender": "Area, Ethnic, Cultural, Gender, And Group Studies", "communication": "Communication, Journalism, And Related Programs","communications_technology": "Communications Technologies/Technicians And Support Services","computer":"Computer And Information Sciences And Support Services","personal_culinary": "Personal And Culinary Services","education":"Education","engineering":"Engineering","engineering_technology": "Engineering Technologies And Engineering-Related Fields","language":"Foreign Languages, Literatures, And Linguistics","family_consumer_science":"Family And Consumer Sciences/Human Sciences","legal":"Legal Professions And Studies","english":"English Language And Literature/Letters","humanities":"Liberal Arts And Sciences, General Studies And Humanities","library":"Library Science","biological":"Biological And Biomedical Sciences","mathematics":"Mathematics And Statistics","military":"Military Technologies And Applied Sciences","multidiscipline":"Multi/Interdisciplinary Studies","parks_recreation_fitness":"Parks, Recreation, Leisure, And Fitness Studies","philosophy_religious":"Philosophy And Religious Studies","theology_religious_vocation":"Theology And Religious Vocations","physical_science":"Physical Sciences","science_technology":"Science Technologies/Technicians","psychology":"Psychology","security_law_enforcement":"Homeland Security, Law Enforcement, Firefighting And Related Protective Services","public_administration_social_service":"Public Administration And Social Service Professions","social_science":"Social Sciences","construction":"Construction Trades","mechanic_repair_technology":"Mechanic And Repair Technologies/Technicians","precision_production":"Precision Production","transportation":"Transportation And Materials Moving","visual_performing":"Visual And Performing Arts","health":"Health Professions And Related Programs","business_marketing":"Business, Management, Marketing, And Related Support Services","history":"History"};
@@ -22,12 +42,13 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 			selectedSchoolInfo(url);
 		}
 
-		function showPosition(latlon,div) {
-			var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="
-			+latlon+"&zoom=15&size=500x400&sensor=false&key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU";
+		function showPosition(latlon,div,la,lo) {
 			var element = document.getElementById("indiUni");
 			var divImg = document.createElement("div");
 			divImg.className = "seven columns";
+			divImg.id = "map";
+			var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="
+			+latlon+"&zoom=17&size=500x400&sensor=false&markers=color:red|"+latlon+"&key=AIzaSyDC8E_5S_spLkhzLo2U_1LA57pPtR_SPn4";
 			var imgMap = document.createElement("img");
 			imgMap.setAttribute("src",img_url);
 			divImg.appendChild(imgMap);
@@ -45,29 +66,19 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 					var divRowHeader = document.createElement("div");
 					divRowHeader.className = "row";
 					var header = document.createElement("h1");
-					header.className = "seven columns";
+					header.className = "six columns";
 					var headerText = document.createTextNode(selectedSchool);
 					header.appendChild(headerText);
+					var hr = document.createElement("HR");
 					divRowHeader.appendChild(header);
-
-					/*var divButton = document.createElement("div");
-					divButton.setAttribute("ng-controller","favoriteController");
-					divButton.className = "five columns";
-					divButton.setAttribute = ("ng-controller","favoriteController");
-					var favButton = document.createElement("button");
-					favButton.className="favButton";
-					favButton.setAttribute("ng-click","addToFavorite()");
-					var favButtonText = document.createTextNode("Favorite School");
-					favButton.appendChild(favButtonText);
-					divButton.appendChild(favButton);
-					divRowHeader.appendChild(divButton);*/
+					
 
 					element.appendChild(divRowHeader);
+					element.appendChild(hr);
 
 					for (var i = 0; i<data.results.length; i++){
 						
 						if(data.results[i]['school']['name'] == selectedSchool){
-							console.log(data.results);
 							var divRowAboutSchool = document.createElement("div");
 							divRowAboutSchool.className = "row";
 							var divSchool = document.createElement("div");
@@ -173,7 +184,7 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 							divRowAboutSchool.appendChild(divSchool);
 							element.appendChild(divRowAboutSchool);
 							var selectedSchoolLatLon = data.results[i]['location']['lat'] + "," + data.results[i]['location']['lon'];
-							showPosition(selectedSchoolLatLon,divRowAboutSchool);
+							showPosition(selectedSchoolLatLon,divRowAboutSchool,data.results[i]['location']['lat'],data.results[i]['location']['lon']);
 
 							//DIV  
 							var divRowStudentBodyAdGrad = document.createElement("div");
@@ -231,7 +242,7 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 							if(data.results[i]['2014']['admissions']['sat_scores']['average']['overall'] != null){
 								var pSchoolSatAvgText =document.createTextNode("SAT Overall Average Score: " + numberWithCommas(data.results[i]['2014']['admissions']['sat_scores']['average']['overall']));
 							}else{
-								var pSchoolSatAvgText =document.createTextNode("SAT Overall Average Score: No Data Avialable");
+								var pSchoolSatAvgText =document.createTextNode("SAT Overall Average Score: No Data Available");
 							}
 							pSchoolSatAvg.appendChild(pSchoolSatAvgText);
 							divAdmissions.appendChild(pSchoolSatAvg);
@@ -253,7 +264,7 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 								var pSchoolGRateText =document.createTextNode("Graduation Rate: " + Math.floor(data.results[i]['2014']['completion']['completion_rate_4yr_150nt_pooled']*100)+"%");
 								pSchoolGRate.appendChild(pSchoolGRateText);
 							}else if(data.results[i]['2014']['completion']['completion_rate_4yr_150nt_pooled'] == null){
-								var pSchoolGRateText =document.createTextNode("Graduation Rate: No Data Avialable");
+								var pSchoolGRateText =document.createTextNode("Graduation Rate: No Data Available");
 								pSchoolGRate.appendChild(pSchoolGRateText);
 							}
 							divGrad.appendChild(pSchoolGRate);
@@ -298,7 +309,7 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 							if(data.results[i]['2014']['aid']['loan_principal'] != null){
 								var pSchoolAidText =document.createTextNode("Typical Total Debt: $" + numberWithCommas(data.results[i]['2014']['aid']['loan_principal']));
 							}else{
-								var pSchoolAidText =document.createTextNode("Typical Total Debt: No Data Avialable");
+								var pSchoolAidText =document.createTextNode("Typical Total Debt: No Data Available");
 							}
 							pSchoolAid.appendChild(pSchoolAidText);
 							divAid.appendChild(pSchoolAid);
@@ -306,7 +317,11 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 
 							var pSchoolLMonthly = document.createElement("p");
 							pSchoolLMonthly.className = "info";
+							if(data.results[i]['2014']['aid']['median_debt']['completers']['monthly_payments'] != null){
 							var pSchoolLMonthlyText =document.createTextNode("Typical Monthly Loan Payments of Graduates: $" + Math.floor(data.results[i]['2014']['aid']['median_debt']['completers']['monthly_payments']) +" per month");
+							}else{
+							var pSchoolLMonthlyText =document.createTextNode("Typical Monthly Loan Payments of Graduates: No Data Available");
+							}
 							pSchoolLMonthly.appendChild(pSchoolLMonthlyText);
 							divAid.appendChild(pSchoolLMonthly);
 							divRowCostAidEarn.appendChild(divAid);
@@ -322,7 +337,11 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 
 							var pSchoolEarnings = document.createElement("p");
 							pSchoolEarnings.className = "info";
+							if(data.results[i]['2012']['earnings']['10_yrs_after_entry']['median'] != null){
 							var pSchoolEarningsText =document.createTextNode("Average Earnings After School: $" + numberWithCommas(data.results[i]['2012']['earnings']['10_yrs_after_entry']['median']));
+							}else{
+							var pSchoolEarningsText =document.createTextNode("Average Earnings After School: No Data Available");
+							}
 							pSchoolEarnings.appendChild(pSchoolEarningsText);
 							divEarnings.appendChild(pSchoolEarnings);
 							divRowCostAidEarn.appendChild(divEarnings);
@@ -348,6 +367,36 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 								}
 							}
 							element.appendChild(divAcademics);
+
+							//To check if the school is favorited or not
+							var userName = $cookies.get("email");
+							//Have to pass an object to POST
+							var info = {
+								email : userName
+							}
+
+							var rateButton = document.getElementById("rateButton");
+							rateButton.setAttribute("onClick","location.href=\"rateSchool.html?name="+selectedSchool+"\"");
+						
+							$http.post('/api/getSavedSchools', info).then(function(response){
+								if(response.data.length >0){
+									var favButton = document.getElementById("favButton");
+									for(var i = 0; i < response.data.length; i++){
+										if(selectedSchool == response.data[i]){
+											favButton.textContent = "Unfavorite";
+											favButton.setAttribute("ng-click","removeSchoolFromFavorites()");
+											var el = angular.element(favButton);
+											$scope = el.scope();
+											$injector = el.injector();
+											$injector.invoke(function($compile){
+												$compile(el)($scope)
+											})
+										}
+									}
+								}
+							});
+
+
 						}
 					}
 				}
@@ -360,39 +409,100 @@ app.controller('loadSchool',function($scope,saveSchoolName){
 /*
 Controller for storing the favorited school and storing it in the server
 */
-app.controller('favoriteController',function($scope,$http,saveSchoolName){
-	/*
-	Sends a request to the server adding the selected school to the users favorite list
-	Prints the response to console.
-	 */
+app.controller('favoriteController',function($scope,$http,$window,$cookies,saveSchoolName){
+	
 	$scope.addSchoolToFavorites = function(){
 		var school = saveSchoolName.getSchoolName();
-		var userName = getURLParameter("user");
+		var userName = $cookies.get("email");
 		var info = {
 			email : userName,
 			school : school
 		}
 		$http.post('/api/saveSchool', info).then(function(response){
-			console.log(response);
+			$window.location.reload();
 		});
 	}
-	/*
-	Sends a request to the server requesting a list of school favorited by this user.
-	Prints the results to console.
-	 */
-	$scope.displayFavorites = function(){
-		var userName = getURLParameter("user");
-		//Have to pass an object to POST
+
+	$scope.removeSchoolFromFavorites = function(){
+		$window.location.reload();
+		var school = saveSchoolName.getSchoolName();
+		var userName = $cookies.get("email");
 		var info = {
-			email : userName
+			email : userName,
+			school : school
 		}
-		$scope.schoolList = ['First'];
-		$http.post('/api/getSavedSchools', info).then(function(response){
-			console.log("response is " + response.data);
-			console.log(response.data.length);
+		$http.post('/api/removeSchool', info).then(function(response){
 		});
 	}
 });
+
+app.controller('userComments', function($scope,$http,$cookies,saveSchoolName){
+
+	$scope.User = {
+		email : "",
+		rating : "",
+		comment : ""
+	}
+
+	var schoolobj = {
+		school : saveSchoolName.getSchoolName()
+	}
+
+	$scope.loadComments = function(){
+		
+		$http.post('/api/loadComments',schoolobj).then(function(response){
+			if(response.data.length >0){
+			console.log(response);
+			var element = document.getElementById("commentsSection");
+			var sum = 0;
+			for(var i = 0; i < response.data[0]["usersArray"].length; i++){
+				var div = document.createElement("div");
+
+				var pUser = document.createElement("p");
+				var pUserText = document.createTextNode("User: "+response.data[0]["usersArray"][i].email);
+				pUser.appendChild(pUserText);
+				div.appendChild(pUser);
+
+				var pRating = document.createElement("p");
+				var pRatingText = document.createTextNode("Rating: "+response.data[0]["usersArray"][i].rating);
+				sum = sum + parseInt(response.data[0]["usersArray"][i].rating);
+				pRating.appendChild(pRatingText);
+				div.appendChild(pRating);
+
+				var pComment = document.createElement("p");
+				var pCommentText = document.createTextNode("Comment: "+response.data[0]["usersArray"][i].comment);
+				pComment.appendChild(pCommentText);
+				div.appendChild(pComment);
+
+				var hr = document.createElement("HR");
+				div.appendChild(hr);
+
+				element.appendChild(div);
+			}
+			var avgElement = document.getElementById("averageRating");
+			var div = document.createElement("div");
+			div.className = "ratingForEachSchool";
+			var avgHeader = document.createElement("h5");
+			var avgHeaderText = document.createTextNode("Rating: ");
+			avgHeader.appendChild(avgHeaderText);
+			div.appendChild(avgHeader);
+			var linkAvgBttm = document.createElement("a");
+			linkAvgBttm.setAttribute("href","#commentsSection");
+			var linkAvgBttmText = document.createTextNode((sum/response.data[0]["usersArray"].length).toFixed(1));
+			linkAvgBttm.appendChild(linkAvgBttmText);
+			avgHeader.appendChild(linkAvgBttm);
+			var outOfText = document.createTextNode("\/5");
+			avgHeader.appendChild(outOfText);
+			avgElement.appendChild(div);
+			console.log("Average: " +(sum/response.data[0]["usersArray"].length).toFixed(1));
+		}
+		});
+	
+	}
+
+
+});
+
 /*
 Service the extracts and saves the name of the school
 */

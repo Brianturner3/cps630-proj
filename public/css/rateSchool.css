@@ -1,0 +1,118 @@
+#formRate{
+    margin-top:5rem;
+}
+
+/* Media Queries */
+@media(min-width: 320px){
+    /*header for ratepage*/
+.rateHeader {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 8rem;
+}
+.rbutt {
+    display: inline-block;
+    position: fixed;
+    top: 7rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 420px;
+    height: 275px;
+    margin: auto;
+}
+label {
+  float: left;
+  clear: none;
+  display: block;
+  color: darkgrey;
+  text-align: center;
+}
+
+input[type=radio] {
+  float: left;
+  clear: none;
+  padding-bottom: 5px;
+}
+
+input[type=radio] {
+    visibility: hidden;
+}
+
+/*input[type=radio]:hover + label {
+    background-color: #3c8cdf;
+}*/
+
+input[type=radio] + label {
+    /*background-color: #2f6297;*/
+    background-image: url(/images/starblack.png);
+    background-repeat: no-repeat;
+    background-position-y: 6px;
+    background-position-x: 3px;
+    background-size: 50px 45px;
+    padding: 25px;
+    height: 12px; 
+    display: inline-block;
+    line-height: 12px;
+    font-size: 12px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+                        
+input[type=radio]:checked + label {
+    background-image: url(/images/stargold.png);
+}
+
+/*comment section*/
+.comment-section {
+    display: inline-block;
+    position: fixed;
+    top: 30px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 500px;
+    height: 100px;
+    margin: auto;
+}
+
+.comment-area {
+    margin: 0px 0px 15px; 
+    height: 169px; 
+    width: 502px; 
+    resize: none;
+}
+
+.sub-button {
+    height:20px; 
+    width:100px; 
+    margin: -20px -50px; 
+    position:relative;
+    top:50%; 
+    left:50%;
+}
+
+}
+@media (min-width: 400px) { 
+}
+@media (min-width: 550px) {
+.rbutt {
+    top: 0;
+}
+
+/*header for ratepage*/
+.rateHeader {
+    font-size: 2.5em;
+    margin-top:3rem;    
+}
+}
+@media (min-width: 789px) {
+}
+/* Larger than tablet */
+@media (min-width: 750px) {}
+
+/* Larger than desktop */
+@media (min-width: 1000px) {}
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px) {}

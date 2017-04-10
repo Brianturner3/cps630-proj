@@ -1,0 +1,35 @@
+#mainHeader{
+	text-align: center;
+}
+
+#favoritesContainer{
+	margin-top: 10rem;
+}
+.eachSchoolWrapper{
+	border: 1px solid;
+	margin: 1rem 2rem;
+}
+.eachSchool{
+	margin: 1rem 2rem;
+	max-height: 275px;
+}
+a.infoSchoolName{
+	font-size: 1.5em;
+	cursor: pointer;
+	color: #F87060;
+	line-height: 0;
+}
+a.infoSchoolName:hover{
+	color:grey;
+}
+a.info{
+	color:#F87060
+
+}
+a.info:hover{
+	color: grey;
+}
+
+p.info{
+	    margin-bottom: 1px;
+}

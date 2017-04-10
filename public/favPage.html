@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" type="text/css" href="css/home.css">
+	<link rel="stylesheet" href="text/css" href="css/nav.css">
+	<link rel="stylesheet" type="text/css" href="css/favPage.css">
+</head>
+<body ng-app="app">
+	
+		<!-- Start of Page -->
+	<nav>
+		<div class="offset-by-one ten offset-by-one columns">
+			<img src="images/uniguide-black.png" id="logoImg" alt="">
+		</div>
+		<ul class="u-pull-right" id="listItems">
+			<li><a href="/index.html" class="link">Search</a></li>
+			<li><a href="/favPage.html" class="link">Favorites</a></li>
+			<li><a onclick ="deleteAllCookies()" href="/index.html" class="link">Logout</a></li>
+		</ul>
+
+		<!-- Hamburger -->
+		<div class="dropdown u-pull-right" id="dropDownMenu">
+			<div class="container dropbtn" onclick="myFunction(this)">
+				<div class="bar1"></div>
+				<div class="bar2"></div>
+				<div class="bar3"></div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Drop Down Menu -->
+	<div id="myDropdown" class="dropdown-content">
+		<a href="/index.html">Search</a>
+		<a href="/favPage.html">Favorites</a>
+		<a onclick ="deleteAllCookies()" href="/index.html" class="link">Logout</a>
+	</div>
+
+	<div class="container" id="favoritesContainer">
+		<div class="row">
+			<div class="ten offset-by-one columns" id="favSchools">
+					<h5>List of all your favorite schools</h5>
+					<div ng-controller="loadFav" ng-init="load()"></div>
+			</div>
+		</div>
+	</div>
+
+<!-- Javascript -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- ngstorage -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+<!-- Custom Controller -->
+<script src="controllers/showFavController.js"></script>
+<!-- Angular Cookies -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- Needed for the Nav -->
+<script src="js/nav.js"></script>
+<!-- Needed for Logout -->
+<script type = "text/javascript" src = "js/home.js"></script>
+</body>
+</html>

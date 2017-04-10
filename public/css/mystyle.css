@@ -1,0 +1,20 @@
+div.favButton{
+	position: absolute;
+	top: 20px;
+	right: 50px;
+}
+div.rateButton{
+	position: absolute;
+	top: 20px;
+	right: 200px;
+}
+h3.areaHeader{
+	text-align: center;
+}
+
+div.averageRating{
+	position: absolute;
+	top: 20px;
+	right: 320px;
+}
+

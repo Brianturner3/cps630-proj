@@ -6,34 +6,66 @@
 	<!-- Stylesheets-->
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/skeleton.css">
-
+	<link rel="stylesheet" type="text/css" href="css/home.css">
+	<link rel="stylesheet" href="css/mystyle.css">
 	<!-- Javascript --> 
 	<script type = "text/javascript" src = "js/home.js"></script>
 </head>
 <body ng-app="app">
+	<!-- Start of Page -->
+	<nav>
+		<div class="offset-by-one ten offset-by-one columns">
+			<img src="images/uniguide-black.png" id="logoImg" alt="">
+		</div>
+		<ul class="u-pull-right" id="listItems">
+			<li><a href="/index.html" class="link">Search</a></li>
+			<li><a href="/favPage.html" class="link">Favorites</a></li>
+			<li><a onclick ="deleteAllCookies()" href="/index.html" class="link">Logout</a></li>
+		</ul>
 
-	<div class="container">
-		<div class="row">
-			<div class="10 columns">
-				<div ng-controller="loadSchool" ng-init="load()" id ="indiUni" style="display:block;">
-				</div>
-				<div ng-controller="favoriteController" class="two columns">
-					<button ng-click="addSchoolToFavorites()">Save School</button>
-					<!-- SUBJECT TO CHANGE. For now this button displays the current users favorite schools -->
-					<button ng-click="displayFavorites()">Display Schools</button>
-				</div>
+		<!-- Hamburger -->
+		<div class="dropdown u-pull-right" id="dropDownMenu">
+			<div class="container dropbtn" onclick="myFunction(this)">
+				<div class="bar1"></div>
+				<div class="bar2"></div>
+				<div class="bar3"></div>
 			</div>
 		</div>
+	</nav>
+
+	<!-- Drop Down Menu -->
+	<div id="myDropdown" class="dropdown-content">
+		<a href="/index.html">Search</a>
+		<a href="/favPage.html">Favorites</a>
+		<a onclick ="deleteAllCookies()" href="/index.html" class="link">Logout</a>
+	</div>
+	<div class="container" style = "margin-top: 5rem;">
+				<div ng-controller="loadSchool" ng-init="load()" id ="indiUni" style="display:block;"></div>
+				<div class = "averageRating" id = "averageRating"></div>
+				<div class="rateButton">
+					<button id = "rateButton">Rate</button>
+				</div>
+				<div ng-controller="favoriteController" class="favButton">
+					<button ng-click="addSchoolToFavorites()" id = "favButton">Favorite</button>
+				</div>
+	</div>
+
+	<div class="container" ng-controller="userComments" ng-init="loadComments()">
+	<hr>
+		<div class="row">
+			<div class="ten offset-by-one columns" id = "commentsSection">
+				<h3>Comments and Ratings</h3><hr>
+			</div>
+		</div>
+	</div>
 	
 	<!-- End of Document -->
 	
 	<!-- Javascript -->
 	<!-- Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js" type="text/javascript" charset="utf-8"></script>
-	<!-- ngstorage -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
-	<!-- Custom Controller -->
 	<script src="controllers/universityController.js"></script>
-
+	<!-- Angular Cookies -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-cookies.min.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 	</html> 
