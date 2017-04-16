@@ -24,24 +24,31 @@ app.run(function($cookies, $rootScope, $http, $window){
 
 app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$window',function($scope, $http, $cookies, $injector,$window){
 	var key = "Zw3luZF61RH5Nv1Up0LZNLLFK7bSJv1af3FJzLIu";
-	var searchedUni;
+	var searchedUni = "null";
 	var selectedSchool = getURLParameter('name');
 	//Retrieve University
 	$scope.getUni = function(){
 		var uniDiv = document.getElementById("university");
 		var filterProgram = document.getElementById("dropDownPrograms").value;
-		if(document.getElementById("university")&&document.getElementById("uni").value){			
+		var filterCity = "null";
+		var filterUni = "null";
+		if(document.getElementById("university")){			
 			uniDiv.style.display = "block";
 		}
 
-		searchedUni = document.getElementById("uni").value;
+		if(document.getElementById("uni").value){
+			searchedUni = document.getElementById("uni").value;
+		}
+
+		if(document.getElementById("loc").value){
+			filterCity = document.getElementById("loc").value;
+		}
 
 		var checkUniNode = document.getElementById("university");
 		while(checkUniNode.firstChild) {
 			checkUniNode.removeChild(checkUniNode.firstChild);
 		}
-		updateUni(searchedUni,filterProgram);
-
+		updateUni(searchedUni,filterProgram,filterCity);
 
 	}
 
@@ -58,6 +65,7 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 					sum = sum + parseInt(response.data[0]["usersArray"][i].rating);
 				}
 				var p = document.createElement("p");
+				p.className = "info";
 				var pText = document.createTextNode("Rating: " +(sum/response.data[0]["usersArray"].length).toFixed(1) + "\/5");
 				p.appendChild(pText);
 				d.appendChild(p);
@@ -66,27 +74,49 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 	}
 
 
-	function updateUni(u,p){
+	function updateUni(u,p,l){
+		if(u != "null"){
+		if(l == "null"){
 		if(p == "any"){
-			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+u+"&_sort=2014.student.size:desc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url,2014.admissions.admission_rate.overall,2014.completion.completion_rate_4yr_150nt_pooled&api_key="+key;
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+u+"&_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&api_key="+key;
 		}else{
-			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+u+"&_sort=2014.student.size:desc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url,2014.admissions.admission_rate.overall,2014.completion.completion_rate_4yr_150nt_pooled&2014.academics.program.degree."+p+"__range=1..&api_key="+key;
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+u+"&_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&2014.academics.program.degree."+p+"__range=1..&api_key="+key;
 		}
-		sendRequest(url,p);
-	}
-/*
-	function enter(e){
-		e = e || $window.event;
-		if(e.keyCode == 13){
-			document.getElementById("btn").click();
-			console.log("pressed");
-			return false;
+		}else{
+			if(p == "any"){
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+u+"&school.city="+l+"&_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&api_key="+key;
+		}else{
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+u+"&school.city="+l+"&_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&2014.academics.program.degree."+p+"__range=1..&api_key="+key;
 		}
-		return true;
-	}
-	*/
+		}
+		}else{
+		if(l == "null"){
+		if(p == "any"){
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&api_key="+key;
+		}else{
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&2014.academics.program.degree."+p+"__range=1..&api_key="+key;
+		}
+		}else{
+			if(p == "any"){
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.city="+l+"&_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&api_key="+key;
+		}else{
+			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.city="+l+"&_sort=school.name:asc&_fields=school.name,school.city,school.state,2014.student.size,school.school_url&2014.academics.program.degree."+p+"__range=1..&api_key="+key;
+		}
+		}
 
-	function sendRequest(url,p){
+		}
+		sendRequest(url,p,l);
+	}
+
+	function linkToPage(url,p,l){
+		var checkUniNode = document.getElementById("university");
+		while(checkUniNode.firstChild) {
+			checkUniNode.removeChild(checkUniNode.firstChild);
+		}
+		sendRequest(url,p,l);
+	}
+
+	function sendRequest(url,p,l){
 		var keysToPrograms = {"agriculture": "Agriculture, Agriculture Operations, And Related Sciences", "resources": "Natural Resources And Conservation", "architecture":"Architecture And Related Services", "ethnic_cultural_gender": "Area, Ethnic, Cultural, Gender, And Group Studies", "communication": "Communication, Journalism, And Related Programs","communications_technology": "Communications Technologies/Technicians And Support Services","computer":"Computer And Information Sciences And Support Services","personal_culinary": "Personal And Culinary Services","education":"Education","engineering":"Engineering","engineering_technology": "Engineering Technologies And Engineering-Related Fields","language":"Foreign Languages, Literatures, And Linguistics","family_consumer_science":"Family And Consumer Sciences/Human Sciences","legal":"Legal Professions And Studies","english":"English Language And Literature/Letters","humanities":"Liberal Arts And Sciences, General Studies And Humanities","library":"Library Science","biological":"Biological And Biomedical Sciences","mathematics":"Mathematics And Statistics","military":"Military Technologies And Applied Sciences","multidiscipline":"Multi/Interdisciplinary Studies","parks_recreation_fitness":"Parks, Recreation, Leisure, And Fitness Studies","philosophy_religious":"Philosophy And Religious Studies","theology_religious_vocation":"Theology And Religious Vocations","physical_science":"Physical Sciences","science_technology":"Science Technologies/Technicians","psychology":"Psychology","security_law_enforcement":"Homeland Security, Law Enforcement, Firefighting And Related Protective Services","public_administration_social_service":"Public Administration And Social Service Professions","social_science":"Social Sciences","construction":"Construction Trades","mechanic_repair_technology":"Mechanic And Repair Technologies/Technicians","precision_production":"Precision Production","transportation":"Transportation And Materials Moving","visual_performing":"Visual And Performing Arts","health":"Health Professions And Related Programs","business_marketing":"Business, Management, Marketing, And Related Support Services","history":"History"};
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function(){
@@ -95,11 +125,35 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 				console.log(data);
 				if(data.results.length>0){
 					var header = document.createElement("h5");
+					if(searchedUni != "null"){
+					if(l == "null"){
 					if(p == "any"){
-						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\"");
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\"" +" in the name.");
 					}else{
-						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\" who offers "+keysToPrograms[p]);
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\" in the name, who offers "+keysToPrograms[p]+".");
 					}
+				}else{
+					if(p == "any"){
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\"" +" in the name, located at "+l+" city.");
+					}else{
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\" in the name, who offers "+keysToPrograms[p]+" located at " + l +" city.");
+					}
+				}
+				}else{
+				if(l == "null"){
+					if(p == "any"){
+						var h5 = document.createTextNode("List of all schools.");
+					}else{
+						var h5 = document.createTextNode("List of all schools who offers "+keysToPrograms[p]+".");
+					}
+				}else{
+					if(p == "any"){
+						var h5 = document.createTextNode("List of all schools located at "+l+" city.");
+					}else{
+						var h5 = document.createTextNode("List of all schools who offers "+keysToPrograms[p]+", located at " + l +" city.");
+					}
+				}
+				}
 					header.appendChild(h5);
 
 					var element = document.getElementById("university");
@@ -129,12 +183,12 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 
 							var a = document.createElement("a");
 							a.className = "infoSchoolName";
+							var x = data.results[i]['school.name'].replace("&","%26");
 							var pSchoolName = document.createTextNode(data.results[i]['school.name']);
-							a.setAttribute('href', "university.html?name="+data.results[i]['school.name']);
+							a.setAttribute('href', "university.html?name="+x);
 							a.appendChild(pSchoolName);
 							div.appendChild(a);
-
-							
+	
 
 							var pSchoolSize = document.createElement("p");
 							pSchoolSize.className = "info";
@@ -155,15 +209,14 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 							element.appendChild(wrapDiv);
 						}
 					}
+
+					var links = document.getElementById("links");
+					var pages = Math.floor(data.metadata.total/data.metadata.per_page);
+					console.log(pages);
 				}else{
 					var header = document.createElement("h3");
-					if(p == "any"){
-					var h1 = document.createTextNode("No such schools with keyword \"" + searchedUni + "\"");
-					}else{
-					var h1 = document.createTextNode("No such schools with keyword \"" + searchedUni + "\"who offers "+keysToPrograms[p]);
-					}
+					var h1 = document.createTextNode("No such schools sorry :(");
 					header.appendChild(h1);
-
 					var element = document.getElementById("university");
 					element.appendChild(header);
 				}
