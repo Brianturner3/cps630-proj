@@ -37,6 +37,8 @@ app.controller('loadSchool',function($scope,$http,$injector,$cookies,saveSchoolN
 		init();
 
 		function apiCall(){
+			//var x = selectedSchool.replace("","%26");
+			//console.log(selectedSchool);
 			var url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.name="+selectedSchool+"&api_key="+key;
 			saveSchoolName.setSchoolName(selectedSchool);
 			selectedSchoolInfo(url);
@@ -285,14 +287,22 @@ app.controller('loadSchool',function($scope,$http,$injector,$cookies,saveSchoolN
 
 							var pSchoolTuition = document.createElement("p");
 							pSchoolTuition.className = "info";
+							if(data.results[i]['2014']['cost']['tuition']['in_state'] != null){
 							var pSchoolTuitionText =document.createTextNode("Tuition Cost for Academic Year: $" + numberWithCommas(data.results[i]['2014']['cost']['tuition']['in_state']));
+							}else{
+								var pSchoolTuitionText =document.createTextNode("Tuition Cost for Academic Year: No Data Available");
+							}
 							pSchoolTuition.appendChild(pSchoolTuitionText);
 							divCost.appendChild(pSchoolTuition);
 							divRowCostAidEarn.appendChild(divCost);
 
 							var pSchoolCYear = document.createElement("p");
 							pSchoolCYear.className = "info";
+							if(data.results[i]['2014']['cost']['attendance']['academic_year'] != null){
 							var pSchoolCYearText =document.createTextNode("Overall Cost for Academic Year: $" + numberWithCommas(data.results[i]['2014']['cost']['attendance']['academic_year']));
+							}else{
+							var pSchoolCYearText =document.createTextNode("Overall Cost for Academic Year: No Data Available");
+							}
 							pSchoolCYear.appendChild(pSchoolCYearText);
 							divCost.appendChild(pSchoolCYear);
 							divRowCostAidEarn.appendChild(divCost);

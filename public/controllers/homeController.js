@@ -1,5 +1,9 @@
 var app = angular.module('myApp',['ngCookies']);
-
+var pNum = 0;
+var urlNow,pNow,lNow;
+var key = "Zw3luZF61RH5Nv1Up0LZNLLFK7bSJv1af3FJzLIu";
+	var searchedUni = "null";
+	var selectedSchool = getURLParameter('name');
 app.run(function($cookies, $rootScope, $http, $window){
 
 	if($cookies.get('token')){
@@ -23,17 +27,18 @@ app.run(function($cookies, $rootScope, $http, $window){
 
 
 app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$window',function($scope, $http, $cookies, $injector,$window){
-	var key = "Zw3luZF61RH5Nv1Up0LZNLLFK7bSJv1af3FJzLIu";
-	var searchedUni = "null";
-	var selectedSchool = getURLParameter('name');
 	//Retrieve University
 	$scope.getUni = function(){
 		var uniDiv = document.getElementById("university");
+		var linksDiv = document.getElementById("links");
 		var filterProgram = document.getElementById("dropDownPrograms").value;
 		var filterCity = "null";
 		var filterUni = "null";
 		if(document.getElementById("university")){			
 			uniDiv.style.display = "block";
+		}
+		if(document.getElementById("links")){			
+			links.style.display = "block";
 		}
 
 		if(document.getElementById("uni").value){
@@ -105,6 +110,9 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 		}
 
 		}
+		urlNow = url;
+		pNow = p;
+		lNow = l;
 		sendRequest(url,p,l);
 	}
 
@@ -116,8 +124,14 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 		sendRequest(url,p,l);
 	}
 
+
+
 	function sendRequest(url,p,l){
 		var keysToPrograms = {"agriculture": "Agriculture, Agriculture Operations, And Related Sciences", "resources": "Natural Resources And Conservation", "architecture":"Architecture And Related Services", "ethnic_cultural_gender": "Area, Ethnic, Cultural, Gender, And Group Studies", "communication": "Communication, Journalism, And Related Programs","communications_technology": "Communications Technologies/Technicians And Support Services","computer":"Computer And Information Sciences And Support Services","personal_culinary": "Personal And Culinary Services","education":"Education","engineering":"Engineering","engineering_technology": "Engineering Technologies And Engineering-Related Fields","language":"Foreign Languages, Literatures, And Linguistics","family_consumer_science":"Family And Consumer Sciences/Human Sciences","legal":"Legal Professions And Studies","english":"English Language And Literature/Letters","humanities":"Liberal Arts And Sciences, General Studies And Humanities","library":"Library Science","biological":"Biological And Biomedical Sciences","mathematics":"Mathematics And Statistics","military":"Military Technologies And Applied Sciences","multidiscipline":"Multi/Interdisciplinary Studies","parks_recreation_fitness":"Parks, Recreation, Leisure, And Fitness Studies","philosophy_religious":"Philosophy And Religious Studies","theology_religious_vocation":"Theology And Religious Vocations","physical_science":"Physical Sciences","science_technology":"Science Technologies/Technicians","psychology":"Psychology","security_law_enforcement":"Homeland Security, Law Enforcement, Firefighting And Related Protective Services","public_administration_social_service":"Public Administration And Social Service Professions","social_science":"Social Sciences","construction":"Construction Trades","mechanic_repair_technology":"Mechanic And Repair Technologies/Technicians","precision_production":"Precision Production","transportation":"Transportation And Materials Moving","visual_performing":"Visual And Performing Arts","health":"Health Professions And Related Programs","business_marketing":"Business, Management, Marketing, And Related Support Services","history":"History"};
+		var links = document.getElementById("links");
+		while(links.firstChild) {
+			links.removeChild(links.firstChild);
+		}
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function(){
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
@@ -213,6 +227,22 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 					var links = document.getElementById("links");
 					var pages = Math.floor(data.metadata.total/data.metadata.per_page);
 					console.log(pages);
+					if(pNow > 0){
+					var preLink = document.createElement("a");
+					preLink.className = "linkButtons";
+					preLink.setAttribute("onclick","linkToPagePre()");
+					var preLinkT = document.createTextNode("Previous");
+					preLink.appendChild(preLinkT);
+					links.appendChild(preLink);
+					}
+					if(pNow != pages){
+					var nextLink = document.createElement("a");
+					nextLink.className = "linkButtons";
+					nextLink.setAttribute("onclick","linkToPageNext()");
+					var nextLinkT = document.createTextNode("Next");
+					nextLink.appendChild(nextLinkT);
+					links.appendChild(nextLink);
+					}
 				}else{
 					var header = document.createElement("h3");
 					var h1 = document.createTextNode("No such schools sorry :(");
@@ -234,3 +264,158 @@ app.controller('universitySearch', ['$scope', '$http','$cookies','$injector','$w
 		return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
 	}
 }]);
+
+	function linkToPageNext(){
+		var checkUniNode = document.getElementById("university");
+		var links = document.getElementById("links");
+		while(checkUniNode.firstChild) {
+			checkUniNode.removeChild(checkUniNode.firstChild);
+		}
+		pNum++;
+		urlNow = urlNow+"&page="+pNum;
+		console.log(urlNow);
+		sendRequestNext(urlNow,pNow,lNow);
+	}
+
+		function linkToPagePre(){
+		var checkUniNode = document.getElementById("university");
+		var links = document.getElementById("links");
+		while(checkUniNode.firstChild) {
+			checkUniNode.removeChild(checkUniNode.firstChild);
+		}
+		pNum--;
+		urlNow = urlNow+"&page="+pNum;
+		console.log(urlNow);
+		sendRequestNext(urlNow,pNow,lNow);
+	}
+
+	function sendRequestNext(url,p,l){
+		var keysToPrograms = {"agriculture": "Agriculture, Agriculture Operations, And Related Sciences", "resources": "Natural Resources And Conservation", "architecture":"Architecture And Related Services", "ethnic_cultural_gender": "Area, Ethnic, Cultural, Gender, And Group Studies", "communication": "Communication, Journalism, And Related Programs","communications_technology": "Communications Technologies/Technicians And Support Services","computer":"Computer And Information Sciences And Support Services","personal_culinary": "Personal And Culinary Services","education":"Education","engineering":"Engineering","engineering_technology": "Engineering Technologies And Engineering-Related Fields","language":"Foreign Languages, Literatures, And Linguistics","family_consumer_science":"Family And Consumer Sciences/Human Sciences","legal":"Legal Professions And Studies","english":"English Language And Literature/Letters","humanities":"Liberal Arts And Sciences, General Studies And Humanities","library":"Library Science","biological":"Biological And Biomedical Sciences","mathematics":"Mathematics And Statistics","military":"Military Technologies And Applied Sciences","multidiscipline":"Multi/Interdisciplinary Studies","parks_recreation_fitness":"Parks, Recreation, Leisure, And Fitness Studies","philosophy_religious":"Philosophy And Religious Studies","theology_religious_vocation":"Theology And Religious Vocations","physical_science":"Physical Sciences","science_technology":"Science Technologies/Technicians","psychology":"Psychology","security_law_enforcement":"Homeland Security, Law Enforcement, Firefighting And Related Protective Services","public_administration_social_service":"Public Administration And Social Service Professions","social_science":"Social Sciences","construction":"Construction Trades","mechanic_repair_technology":"Mechanic And Repair Technologies/Technicians","precision_production":"Precision Production","transportation":"Transportation And Materials Moving","visual_performing":"Visual And Performing Arts","health":"Health Professions And Related Programs","business_marketing":"Business, Management, Marketing, And Related Support Services","history":"History"};
+		var links = document.getElementById("links");
+		while(links.firstChild) {
+			links.removeChild(links.firstChild);
+		}
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function(){
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				var data = JSON.parse(xmlhttp.responseText);
+				console.log(data);
+				if(data.results.length>0){
+					var header = document.createElement("h5");
+					if(searchedUni != "null"){
+					if(l == "null"){
+					if(p == "any"){
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\"" +" in the name.");
+					}else{
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\" in the name, who offers "+keysToPrograms[p]+".");
+					}
+				}else{
+					if(p == "any"){
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\"" +" in the name, located at "+l+" city.");
+					}else{
+						var h5 = document.createTextNode("List of all schools with keyword \""+ searchedUni +"\" in the name, who offers "+keysToPrograms[p]+" located at " + l +" city.");
+					}
+				}
+				}else{
+				if(l == "null"){
+					if(p == "any"){
+						var h5 = document.createTextNode("List of all schools.");
+					}else{
+						var h5 = document.createTextNode("List of all schools who offers "+keysToPrograms[p]+".");
+					}
+				}else{
+					if(p == "any"){
+						var h5 = document.createTextNode("List of all schools located at "+l+" city.");
+					}else{
+						var h5 = document.createTextNode("List of all schools who offers "+keysToPrograms[p]+", located at " + l +" city.");
+					}
+				}
+				}
+					header.appendChild(h5);
+
+					var element = document.getElementById("university");
+					element.appendChild(header);
+
+					for (var i = 0; i<data.results.length; i++){
+						//Wrap around the content div
+						var wrapDiv = document.createElement("div");
+						wrapDiv.className = "eachSchoolWrapper";
+						wrapDiv.id = "eachSchoolWrapperID"
+
+						var div = document.createElement("div");
+						div.className = "eachSchool";
+						div.id = "eachSchool";
+
+
+						if(data.results[i]['2014.student.size'] != null){
+							var pSchoolLocation = document.createElement("p");
+							pSchoolLocation.className = "info";
+							var pSchoolCityText =document.createTextNode(data.results[i]['school.city']+", ");
+							pSchoolLocation.appendChild(pSchoolCityText);
+							var pSchoolStateText =document.createTextNode(data.results[i]['school.state']);
+							pSchoolLocation.appendChild(pSchoolStateText);
+							div.appendChild(pSchoolLocation);
+
+							//getRating(data.results[i]['school.name'],div);
+
+							var a = document.createElement("a");
+							a.className = "infoSchoolName";
+							var x = data.results[i]['school.name'].replace("&","%26");
+							var pSchoolName = document.createTextNode(data.results[i]['school.name']);
+							a.setAttribute('href', "university.html?name="+x);
+							a.appendChild(pSchoolName);
+							div.appendChild(a);
+	
+
+							var pSchoolSize = document.createElement("p");
+							pSchoolSize.className = "info";
+							var pSchoolSizeText =document.createTextNode(numberWithCommas(data.results[i]['2014.student.size']) + " undergraduate students");
+							pSchoolSize.appendChild(pSchoolSizeText);
+							div.appendChild(pSchoolSize);	
+
+							var pSchoolUrlText = document.createTextNode("Website: ");
+							div.appendChild(pSchoolUrlText);
+							var aSchoolUrl = document.createElement("a");
+							aSchoolUrl.className = "info";
+							var aSchoolUrlText = document.createTextNode(data.results[i]['school.school_url']);
+							aSchoolUrl.setAttribute('href', "http://"+data.results[i]['school.school_url']);
+							aSchoolUrl.appendChild(aSchoolUrlText);
+							div.appendChild(aSchoolUrl);
+
+							wrapDiv.appendChild(div);
+							element.appendChild(wrapDiv);
+						}
+					}
+
+					var links = document.getElementById("links");
+					var pages = Math.floor(data.metadata.total/data.metadata.per_page);
+					console.log(pages);
+					if(pNum > 0){
+					var preLink = document.createElement("a");
+					preLink.className = "linkButtons";
+					preLink.setAttribute("onclick","linkToPagePre()");
+					var preLinkT = document.createTextNode("Previous");
+					preLink.appendChild(preLinkT);
+					links.appendChild(preLink);
+					}
+					if(pNum != pages){
+					var nextLink = document.createElement("a");
+					nextLink.className = "linkButtons";
+					nextLink.setAttribute("onclick","linkToPageNext()");
+					var nextLinkT = document.createTextNode("Next");
+					nextLink.appendChild(nextLinkT);
+					links.appendChild(nextLink);
+					}
+				}else{
+					var header = document.createElement("h3");
+					var h1 = document.createTextNode("No such schools sorry :(");
+					header.appendChild(h1);
+					var element = document.getElementById("university");
+					element.appendChild(header);
+				}
+			}
+		};
+
+		xmlhttp.open ("GET", url, true);
+		xmlhttp.send();
+	}

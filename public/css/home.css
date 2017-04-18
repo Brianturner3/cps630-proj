@@ -1,3 +1,20 @@
+a.linkButtons{
+    background-color: #F87060;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 7.5px 35px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+div.links{
+   margin: auto;
+    width: 17%;
+    padding: 10px;
+}
 nav{
     height: 80px;
     width: 
